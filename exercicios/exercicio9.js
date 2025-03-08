@@ -1,16 +1,15 @@
 let livro = {
-    titulo: "O Senhor dos Anéis",
-    autor: "J.R Tolkien",
-    ano: 1954
+  titulo: "O Senhor dos Anéis",
+  autor: "J.R Tolkien",
+  ano: 1954,
+};
+
+let { titulo, autor } = livro;
+console.log(titulo);
+console.log(autor);
+
+function AutorTitulo(a) {
+  return `Título: ${a.titulo}, Autor: ${a.autor}`;
 }
 
-let {titulo, autor} = livro
-console.log(titulo)
-console.log(autor)
-
-function tituloAutor(){
-this.livro
-this.autor
-console.log(tituloAutor)
-}
-
+console.log(AutorTitulo(livro));
