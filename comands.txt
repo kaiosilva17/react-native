@@ -1,4 +1,3 @@
-npm init ( Inicia o npm)
 npm i -g expo-cli ( instalando o terminal CLI no pc)
 npx create-expo-app@latest 04-introducao-react-native --template blank ( criando um projeto em react-native)
 npm start ( Inicia o expo)(isso so acontece porque este atalho esta no script)
