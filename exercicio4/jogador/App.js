@@ -11,7 +11,7 @@ export default function App() {
   return (
     <ScrollView>
       <View style={styles.container}>
-      <Text style={styles.textomaior}>{nome}</Text>
+        <Text style={styles.textomaior}>{nome}</Text>
         <Image source={{
           uri: "https://cdn.pixabay.com/photo/2023/04/05/20/07/player-7902240_640.jpg"
         }}
@@ -33,7 +33,7 @@ export default function App() {
         }}
           style={styles.imagem} />
 
-        
+
         <Text style={styles.texto}>Salário: 200 milhões EUR</Text>
         <Text style={styles.texto}>Altura: 1,89 m</Text>
         <Text style={styles.texto}>Peso: 83 kg</Text>
@@ -61,9 +61,9 @@ const styles = StyleSheet.create({
     fontWeight: 'bold'
   },
   texto: {
-fontSize:20,
-fontWeight: 300,
-color: "#00008B"
+    fontSize: 20,
+    fontWeight: 300,
+    color: "#00008B"
   },
   imagem: {
     height: 250,
