@@ -15,8 +15,8 @@ export default function Filme(props) {
             <Image
                 source={{ uri: dados.capa }}
                 style={{
-                    height: 200,
-                    width: 200
+                    height: 500,
+                    width: 350
                 }}
             />
         </View>
@@ -29,8 +29,8 @@ const styles = StyleSheet.create({
         margin: 10,
         alignItems: 'center',
         justifyContent: 'center',
-        width: 300,
-        height: 300,
+        width: 370,
+        height: 650,
         borderBottomEndRadius: 250,
 
     },

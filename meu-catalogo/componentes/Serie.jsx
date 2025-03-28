@@ -14,8 +14,8 @@ export default function Serie(props) {
             <Image
                 source={{ uri: dados.capa }}
                 style={{
-                    height: 200,
-                    width: 200
+                    height: 450,
+                    width: 280
                 }}
             />
         </View>
@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         width: 300,
-        height: 300,
+        height: 550,
         borderBottomStartRadius: 250,
 
     },
