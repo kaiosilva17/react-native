@@ -2,7 +2,19 @@ npm i -g expo-cli ( instalando o terminal CLI no pc)
 npx create-expo-app@latest 04-introducao-react-native --template blank ( criando um projeto em react-native)
 npm start ( Inicia o expo)(isso so acontece porque este atalho esta no script)
 
-Biblioteca Paper com as dependencias:
+#Biblioteca Paper com as dependencias:
 
 npm install react-native-paper
 npm install react-native-vector-icons react-native-safe-area-context
+
+#Navigation
+
+npm install @react-navigation/native
+
+#Dependencias
+
+npx expo install react-native-screens react-native-safe-area-context
+
+#Navegação por abas
+
+npm install @react-navigation/bottom-tabs
