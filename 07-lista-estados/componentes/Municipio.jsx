@@ -8,7 +8,7 @@ const {nome, imagem} = props
 
     return (
         <Card.Title
-            title="Card Title"
+            title={nome}
             subtitle="Card Subtitle"
             left={(props) => <Avatar.Image {...props} source={{ uri: imagem }} />}
         />
