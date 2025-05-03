@@ -43,7 +43,7 @@ export default function JogadoresScreen(props) {
       <Card style={styles.card}>
             <Card.Title title={item.nome} style={{ backgroundColor:"#970700"}} />
             <Card.Content>
-                <Text >Camisa: {item.numero}</Text>
+                <Text>Camisa: {item.numero}</Text>
             </Card.Content>
             <Card.Cover source={{uri: item.imagem}} style={{width: 200}}/>
             

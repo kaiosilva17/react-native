@@ -19,7 +19,7 @@ export default function Time (props) {
             <Card.Actions>
                 <FlatList
                 horizontal
-                data={jogadores}
+                data={brasil.jogadores}
                 renderItem={({item}) => (
                     <Jogador
                     nome={item.nome}
