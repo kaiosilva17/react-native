@@ -6,13 +6,12 @@ import { FlatList } from 'react-native-gesture-handler'
 
 export default function HomeScreen({ navigation, route }) {
 
-    const [usuarios, setUsuarios] = useState([])
+    const [categorias, setCategorias] = useState([])
 
     useEffect(() => {
-        axios.get("https://dummyjson.com/users?delay=5000")
+        axios.get("https://dummyjson.com/products/category-list")
             .then(resposta => {
-                console.log(resposta.data.users)
-                setUsuarios(resposta.data.users)
+                setCategorias(resposta.data)
             })
             .catch(erro => {
                 console.log(erro)
@@ -23,25 +22,24 @@ export default function HomeScreen({ navigation, route }) {
         <View style={styles.container}>
             <FlatList
                 style={{ marginBottom: 40 }}
-                data={usuarios}
+                data={categorias}
+                keyExtractor={(item, index) => index.toString()}
                 renderItem={({ item }) => (
                     <Card
                         style={{ margin: 8 }}
-                        onPress={() => navigation.navigate('UsuarioScreen', item.id)}
+                        onPress={() => navigation.navigate('ListaProdutoScreen', { categoria: item })}
                     >
                         <Card.Title
-                            title={item.firstName + " " + item.lastName}
-                            subtitle={item.email}
-                            left={(props) => <Avatar.Image {...props} source={{ uri: item.image }} />}
-                            right={() => <IconButton icon={'chevron-right'} size={30} />}
+                            title={item}
+                            right={(props) => <IconButton {...props} icon={'chevron-right'} size={30} />}
                         />
                     </Card>
                 )}
 
-                ListEmptyComponent={() =>(
-                    <View>
-                        <ActivityIndicator animating={true} color={MD2Colors.red800} size={100}/>
-                        <Text>Carregando...</Text>
+                ListEmptyComponent={() => (
+                    <View style={styles.loadingContainer}>
+                        <ActivityIndicator animating={true} color={MD2Colors.red800} size={50} />
+                        <Text>Carregando categorias...</Text>
                     </View>
                 )}
             />
@@ -56,7 +54,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     loadingContainer: {
-        alignItems:'center',
+        alignItems: 'center',
         justifyContent: 'center',
 
     }
