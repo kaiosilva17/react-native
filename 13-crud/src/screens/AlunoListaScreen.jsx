@@ -1,27 +1,28 @@
 import { FlatList, StyleSheet, View } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Button, Text, Card } from 'react-native-paper'
+import Alunoservices from '../services/Alunoservices'
 
 export default function AlunoListaScreen({ navigation, route }) {
 
-    const [alunos, setALunos] = useState([
-        {
-            id: "1",
-            nome: "Kaio",
-            cpf: "00011122233",
-            email: "teste@gmail.com",
-            dataNascimento: '17/12/1965',
-            telefone: "(61) 95867-9865"
-        },
-        {
-            id: "2",
-            nome: "Kaio",
-            cpf: "00011122233",
-            email: "teste@gmail.com",
-            dataNascimento: '17/12/1965',
-            telefone: "(61) 95867-9865"
-        }
-    ])
+    const [alunos, setALunos] = useState([])
+
+    useEffect(() => {
+        listarAlunos()
+    }, [])
+
+    async function listarAlunos() {
+        const listaAlunos = await Alunoservices.listar()
+        setALunos(listaAlunos)
+
+    }
+
+    async function removerAluno(id) {
+        await Alunoservices.remover(id)
+        alert("Aluno excluido com sucesso!")
+        listarAlunos()
+
+    }
 
     return (
         <View>
@@ -44,11 +45,17 @@ export default function AlunoListaScreen({ navigation, route }) {
                             <Text>Email: {item.email}</Text>
                         </Card.Content>
                         <Card.Actions>
-                            <Button>
-                                Editar
+                            <Button 
+                            icon='pencil'
+                            onPress={() => navigation.navigate('AlunoFormScreen', item)}
+                            >
+
                             </Button>
-                            <Button>
-                                Excluir
+                            <Button
+                                icon='delete'
+                                onPress={() => removerAluno(item.id)}
+                            >
+
                             </Button>
                         </Card.Actions>
                     </Card>

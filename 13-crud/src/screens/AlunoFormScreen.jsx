@@ -2,16 +2,19 @@ import { StyleSheet, View } from 'react-native'
 import React, { useState } from 'react'
 import { Button, Text, TextInput } from 'react-native-paper'
 import { TextInputMask } from 'react-native-masked-text'
+import Alunoservices from '../services/Alunoservices'
 
-export default function AlunoFormScreen() {
+export default function AlunoFormScreen({ navigation, route }) {
 
-    const [nome, setNome] = useState("")
-    const [dataNascimento, setDataNascimento] = useState("")
-    const [email, setEmail] = useState("")
-    const [cpf, setCpf] = useState("")
-    const [telefone, setTelefone] = useState("")
+    const alunoAntigo = route.params || {}
 
-    function salvar() {
+    const [nome, setNome] = useState(alunoAntigo.nome || "")
+    const [dataNascimento, setDataNascimento] = useState(alunoAntigo.dataNascimento || "")
+    const [email, setEmail] = useState(alunoAntigo.email || "")
+    const [cpf, setCpf] = useState(alunoAntigo.cpf || "")
+    const [telefone, setTelefone] = useState(alunoAntigo.telefone || "")
+
+    async function salvar() {
         let aluno = {
             nome,
             cpf,
@@ -22,15 +25,33 @@ export default function AlunoFormScreen() {
 
         if (!aluno.nome || !aluno.cpf || !aluno.email || !aluno.dataNascimento || !aluno.telefone) {
             alert('Preencha todos os campos!')
-        } else {
-
+            return
         }
+
+        if (alunoAntigo.id) {
+            aluno.id = alunoAntigo.id
+            await Alunoservices.atualizar(aluno)
+            alert("Aluno alterado com sucesso!")
+            navigation.reset({
+                index: 0,
+                routes: [{ name: 'AlunoListaScreen' }]
+            })
+        } else {
+            await Alunoservices.salvar(aluno)
+            alert("Aluno cadastrado com sucesso!")
+            navigation.reset({
+                index: 0,
+                routes: [{ name: 'AlunoListaScreen' }]
+            })
+        }
+
 
     }
 
     return (
         <View style={styles.container}>
             <Text variant='titleLarge'>Informe os dados</Text>
+            <Text variant='titleLarge'>ID ALUNO: {alunoAntigo.id || "NOVO"}</Text>
             <TextInput
                 style={styles.input}
                 mode='outlined'
