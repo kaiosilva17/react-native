@@ -9,7 +9,7 @@ import {
   FIREBASE_MESSAGING_SENDER_ID,
   FIREBASE_APP_ID,
 } from "@env";
-
+console.log(FIREBASE_API_KEY);
 const firebaseConfig = {
   apiKey: FIREBASE_API_KEY,
   authDomain: FIREBASE_AUTH_DOMAIN,
