@@ -37,29 +37,29 @@ function RegisterScreen({ navigation }) {
   });
 
   const handleRegister = async (data) => {
-    // try {
+    try {
       
-    //   const userCredential = await createUserWithEmailAndPassword(auth, data.email, data.password);
-    //   console.log("Usuário cadastrado com sucesso!", userCredential.user.email);
+      const userCredential = await createUserWithEmailAndPassword(auth, data.email, data.password);
+      console.log("Usuário cadastrado com sucesso!", userCredential.user.email);
       
-    //   Alert.alert("Sucesso", "Sua conta foi criada com sucesso! Faça login para continuar."); 
-    //   reset(); 
-    //   navigation.navigate('Login'); 
+      Alert.alert("Sucesso", "Sua conta foi criada com sucesso! Faça login para continuar."); 
+      reset(); 
+      navigation.navigate('Login'); 
       
-    // } catch (error) {
-    //   console.error("Erro no cadastro:", error.code, error.message);
-    //   let errorMessage = "Ocorreu um erro no cadastro. Tente novamente.";
+    } catch (error) {
+      console.error("Erro no cadastro:", error.code, error.message);
+      let errorMessage = "Ocorreu um erro no cadastro. Tente novamente.";
 
-    //   if (error.code === 'auth/email-already-in-use') {
-    //     errorMessage = "Este e-mail já está em uso. Por favor, utilize outro e-mail.";
-    //   } else if (error.code === 'auth/weak-password') {
-    //     errorMessage = "A senha é muito fraca. Escolha uma senha mais forte.";
-    //   } else if (error.code === 'auth/invalid-email') {
-    //     errorMessage = "O formato do e-mail é inválido.";
-    //   }
+      if (error.code === 'auth/email-already-in-use') {
+        errorMessage = "Este e-mail já está em uso. Por favor, utilize outro e-mail.";
+      } else if (error.code === 'auth/weak-password') {
+        errorMessage = "A senha é muito fraca. Escolha uma senha mais forte.";
+      } else if (error.code === 'auth/invalid-email') {
+        errorMessage = "O formato do e-mail é inválido.";
+      }
 
-    //   Alert.alert("Erro de Cadastro", errorMessage); 
-    // }
+      Alert.alert("Erro de Cadastro", errorMessage); 
+    }
   };
 
   return (

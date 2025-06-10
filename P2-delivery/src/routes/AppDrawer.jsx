@@ -7,11 +7,8 @@ import {
 import { View, StyleSheet } from "react-native";
 import { Text, Avatar, useTheme } from "react-native-paper";
 import { AppColors } from "../constants/Colors";
-
-// Importe suas telas
 import HomeScreen from "../screens/HomeScreen.jsx";
-// === IMPORTAÇÃO CORRETA do AuthNavigator ===
-import AuthNavigator from "./AuthStack.jsx"; // Note que é 'AuthNavigator'
+import AuthNavigator from "./AuthStack.jsx"; 
 
 // Importe os stacks futuros de Usuário e ADM (ainda não criados)
 // import UserStack from './UserStack.jsx';
@@ -56,37 +53,34 @@ function AppDrawer() {
         },
       }}
     >
-      {/* Home Screen - A tela inicial do seu app */}
       <Drawer.Screen
         name="Home"
         component={HomeScreen}
         options={{
-          title: "Início",
+          title: "  Início",
           drawerIcon: ({ color, size }) => (
-            <Text style={{ color, fontSize: size }}>🏠</Text>
+            <Text style={{ color, fontSize: size }}> 🏠</Text>
           ),
         }}
       />
 
-      {/* AuthStack - O fluxo de Login/Cadastro */}
-      {/* Oculto do Drawer, pois é acessado por um botão na Home */}
-      <Drawer.Screen
-        name="AuthStack" // ESTE É O NOME QUE VOCÊ USA NO navigation.navigate
-        component={AuthNavigator} // ESTE É O COMPONENTE QUE VOCÊ IMPORTA
+      {/* <Drawer.Screen
+        name="AuthStack" 
+        component={AuthNavigator} 
         options={{
-          title: "Autenticação", // Título para fins internos ou debug
-          drawerItemStyle: { height: 0 }, // Oculta este item do Drawer
+          title: "Autenticação", 
+          drawerItemStyle: { height: 0 }, 
         }}
-      />
+      /> */}
 
       {/* UserFlow - Placeholder para o fluxo de usuário logado */}
       <Drawer.Screen
         name="UserFlow"
         component={HomeScreen} // Temporariamente aponta para HomeScreen
         options={{
-          title: "Área do Usuário",
+          title: "  Área do Usuário",
           drawerIcon: ({ color, size }) => (
-            <Text style={{ color, fontSize: size }}>👤</Text>
+            <Text style={{ color, fontSize: size }}> 👤</Text>
           ),
         }}
       />
@@ -96,9 +90,9 @@ function AppDrawer() {
         name="AdminFlow"
         component={HomeScreen} // Temporariamente aponta para HomeScreen
         options={{
-          title: "Painel ADM",
+          title: "  Painel ADM ",
           drawerIcon: ({ color, size }) => (
-            <Text style={{ color, fontSize: size }}>⚙️</Text>
+            <Text style={{ color, fontSize: size }}> ⚙️</Text>
           ),
         }}
       />
