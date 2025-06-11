@@ -12,16 +12,16 @@ import { AppColors } from "../../constants/Colors";
 const schema = yup.object({
   cep: yup.string().required("Informe o CEP"),
   tamanho: yup.string().required("Informe o tamanho"),
-  qtdeFuncionarios: yup
-    .number()
-    .min(3, "Mínimo de 3 funcionários")
-    .required()
-    .typeError("Número inválido"),
-  qtdeProdutos: yup
-    .number()
-    .min(3, "Mínimo de 3 produtos")
-    .required()
-    .typeError("Número inválido"),
+  // qtdeFuncionarios: yup
+  //   .number()
+  //   .min(3, "Mínimo de 3 funcionários")
+  //   .required()
+  //   .typeError("Número inválido"),
+  // qtdeProdutos: yup
+  //   .number()
+  //   .min(3, "Mínimo de 3 produtos")
+  //   .required()
+  //   .typeError("Número inválido"),
   horario: yup.string().required("Informe o horário de funcionamento"),
   fundacao: yup.string().required("Informe a data de fundação"),
 });
@@ -155,7 +155,7 @@ export default function LojaFormScreen({ navigation, route }) {
         />
       </View>
 
-      <View style={styles.inputGroup}>
+      {/* <View style={styles.inputGroup}>
         <Controller
           control={control}
           name="qtdeFuncionarios"
@@ -172,7 +172,7 @@ export default function LojaFormScreen({ navigation, route }) {
         {errors.qtdeFuncionarios && (
           <Text style={styles.error}>{errors.qtdeFuncionarios.message}</Text>
         )}
-      </View>
+      </View> */}
 
       <View style={styles.inputGroup}>
         <Controller
@@ -189,7 +189,7 @@ export default function LojaFormScreen({ navigation, route }) {
         />
       </View>
 
-      <View style={styles.inputGroup}>
+      {/* <View style={styles.inputGroup}>
         <Controller
           control={control}
           name="qtdeProdutos"
@@ -206,7 +206,7 @@ export default function LojaFormScreen({ navigation, route }) {
         {errors.qtdeProdutos && (
           <Text style={styles.error}>{errors.qtdeProdutos.message}</Text>
         )}
-      </View>
+      </View> */}
 
       <View style={styles.inputGroup}>
         <Controller

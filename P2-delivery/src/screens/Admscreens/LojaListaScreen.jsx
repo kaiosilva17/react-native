@@ -20,6 +20,8 @@ import moment from "moment";
 import { AppColors } from "../../constants/Colors";
 import * as Animatable from "react-native-animatable";
 import { useNavigation } from "@react-navigation/native";
+import ProdutoService from "../../services/ProdutoService";
+import FuncionarioService from "../../services/FuncionarioService";
 
 export default function LojaListaScreen() {
   const navigation = useNavigation();
@@ -39,17 +41,61 @@ export default function LojaListaScreen() {
     setLoading(false);
   }
 
+  // async function remover(id) {
+  //   Alert.alert("Confirmar", "Deseja excluir a loja?", [
+  //     { text: "Cancelar" },
+  //     {
+  //       text: "Excluir",
+  //       onPress: async () => {
+  //         setRemovendo(true);
+  //         await LojaService.remover(id);
+  //         await carregar();
+  //         setRemovendo(false);
+  //         Alert.alert("Sucesso", "Loja excluída com sucesso!");
+  //       },
+  //     },
+  //   ]);
+  // }
+
   async function remover(id) {
     Alert.alert("Confirmar", "Deseja excluir a loja?", [
       { text: "Cancelar" },
       {
         text: "Excluir",
         onPress: async () => {
-          setRemovendo(true);
-          await LojaService.remover(id);
-          await carregar();
-          setRemovendo(false);
-          Alert.alert("Sucesso", "Loja excluída com sucesso!");
+          try {
+            setRemovendo(true);
+
+            const produtos = await ProdutoService.listarProdutos(id);
+            if (produtos.length > 0) {
+              Alert.alert(
+                "Atenção",
+                "Não é possível excluir. Existem produtos cadastrados nessa loja."
+              );
+              setRemovendo(false);
+              return;
+            }
+
+            const funcionarios = await FuncionarioService.listarFuncionarios(
+              id
+            );
+            if (funcionarios.length > 0) {
+              Alert.alert(
+                "Atenção",
+                "Não é possível excluir. Existem funcionários cadastrados nessa loja."
+              );
+              setRemovendo(false);
+              return;
+            }
+
+            await LojaService.remover(id);
+            await carregar();
+            Alert.alert("Sucesso", "Loja excluída com sucesso!");
+          } catch (error) {
+            Alert.alert("Erro", "Não foi possível excluir a loja.");
+          } finally {
+            setRemovendo(false);
+          }
         },
       },
     ]);
@@ -89,8 +135,13 @@ export default function LojaListaScreen() {
               delay={index * 100}
               duration={600}
             >
-              <Card style={styles.card} elevation={4}
-        onPress={() => navigation.navigate("LojaDetalhesTabs", { loja : item })}>
+              <Card
+                style={styles.card}
+                elevation={4}
+                onPress={() =>
+                  navigation.navigate("LojaDetalhesTabs", { loja: item })
+                }
+              >
                 <View style={styles.imageContainer}>
                   <Image
                     source={{
@@ -102,8 +153,7 @@ export default function LojaListaScreen() {
                 </View>
 
                 <Card.Content>
-                  <Text style={styles.titulo}>{item.funcionarios}</Text>
-                  <Text style={styles.subTitulo}>
+                  <Text style={styles.titulo}>
                     Loja aberta há {calcularMeses(item.fundacao)} meses
                   </Text>
 
@@ -111,10 +161,7 @@ export default function LojaListaScreen() {
 
                   <Text style={styles.info}>🛒 Produtos: {item.produtos}</Text>
                   <Text style={styles.info}>
-                    👨‍🍳 Funcionários: {item.qtdeFuncionarios}
-                  </Text>
-                  <Text style={styles.info}>
-                    📦 Quantidade de Produtos: {item.qtdeProdutos}
+                    👨‍🍳 Funcionários: {item.funcionarios}
                   </Text>
 
                   <Text style={styles.info}>
@@ -124,6 +171,7 @@ export default function LojaListaScreen() {
 
                   <Text style={styles.info}>📅 Fundação: {item.fundacao}</Text>
                   <Text style={styles.info}>⏰ Horário: {item.horario}</Text>
+                  <Text style={styles.info}>📏 Tamanho da Loja: {item.tamanho} m²</Text>
                 </Card.Content>
 
                 <Card.Actions style={styles.actions}>
@@ -184,7 +232,7 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     backgroundColor: AppColors.white,
     overflow: "hidden",
-    marginBottom: 40
+    marginBottom: 40,
   },
   imageContainer: {
     width: "100%",
