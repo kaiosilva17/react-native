@@ -8,11 +8,8 @@ import { View, StyleSheet } from "react-native";
 import { Text, Avatar, useTheme } from "react-native-paper";
 import { AppColors } from "../constants/Colors";
 import HomeScreen from "../screens/HomeScreen.jsx";
-import AuthNavigator from "./AuthStack.jsx"; 
-
-// Importe os stacks futuros de Usuário e ADM (ainda não criados)
-// import UserStack from './UserStack.jsx';
-// import AdminStack from './AdminStack.jsx';
+import AuthNavigator from "./AuthStack.jsx";
+import AdminStack from "./AdminStack.jsx";
 
 const Drawer = createDrawerNavigator();
 
@@ -85,10 +82,9 @@ function AppDrawer() {
         }}
       />
 
-      {/* AdminFlow - Placeholder para o fluxo de ADM logado */}
       <Drawer.Screen
         name="AdminFlow"
-        component={HomeScreen} // Temporariamente aponta para HomeScreen
+        component={AdminStack}
         options={{
           title: "  Painel ADM ",
           drawerIcon: ({ color, size }) => (

@@ -22,7 +22,7 @@ function HomeScreen({ navigation }) {
         <Text style={styles.introText}>
           Bem-vindo ao nosso aplicativo de delivery! 
 
-          <Text variant="displaySmall"style={{color:AppColors.darkPurple}}>KIO's</Text>
+          <Text variant="bodyLarge"style={{color:AppColors.darkPurple}}>KIO's Burguer</Text>
         </Text>
 
         <Card style={styles.card}>
