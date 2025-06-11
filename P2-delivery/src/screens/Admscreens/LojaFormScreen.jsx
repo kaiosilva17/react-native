@@ -64,7 +64,6 @@ export default function LojaFormScreen({ navigation, route }) {
 
   async function salvar(data) {
     try {
-      // salvando também o endereço vindo do cep
       const lojaData = {
         ...data,
         logradouro: data.logradouro || "",

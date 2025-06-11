@@ -89,7 +89,8 @@ export default function LojaListaScreen() {
               delay={index * 100}
               duration={600}
             >
-              <Card style={styles.card} elevation={4}>
+              <Card style={styles.card} elevation={4}
+        onPress={() => navigation.navigate("LojaDetalhesTabs", { loja : item })}>
                 <View style={styles.imageContainer}>
                   <Image
                     source={{
