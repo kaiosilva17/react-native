@@ -25,7 +25,6 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 
-// Inicialize o auth corretamente
 let auth;
 
 try {
@@ -33,7 +32,6 @@ try {
     persistence: getReactNativePersistence(AsyncStorage),
   });
 } catch (e) {
-  // Isso impede erro se já tiver sido inicializado
   console.log("Auth already initialized or error:", e);
 }
 
