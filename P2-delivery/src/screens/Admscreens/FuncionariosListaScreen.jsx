@@ -5,11 +5,16 @@ import {
   StyleSheet,
   Alert,
   ActivityIndicator,
+  Image,
 } from "react-native";
 import { Card, Text, FAB, Button } from "react-native-paper";
 import FuncionarioService from "../../services/FuncionarioService";
 import { AppColors } from "../../constants/Colors";
-import { useFocusEffect, useNavigation, useRoute } from "@react-navigation/native";
+import {
+  useFocusEffect,
+  useNavigation,
+  useRoute,
+} from "@react-navigation/native";
 import * as Animatable from "react-native-animatable";
 import moment from "moment";
 
@@ -24,15 +29,15 @@ export default function FuncionariosListaScreen() {
   const [removendo, setRemovendo] = useState(false);
 
   useFocusEffect(
-  useCallback(() => {
-    if (!lojaId) {
-      Alert.alert("Erro", "Loja não encontrada.");
-      navigation.goBack();
-    } else {
-      carregar();
-    }
-  }, [lojaId])
-);
+    useCallback(() => {
+      if (!lojaId) {
+        Alert.alert("Erro", "Loja não encontrada.");
+        navigation.goBack();
+      } else {
+        carregar();
+      }
+    }, [lojaId])
+  );
 
   async function carregar() {
     try {
@@ -85,24 +90,36 @@ export default function FuncionariosListaScreen() {
               duration={600}
             >
               <Card style={styles.card} elevation={4}>
-                <Card.Content>
-                  <Text style={styles.nome}>{item.nome}</Text>
-                  <Text style={styles.info}>🧑 Função: {item.funcao}</Text>
-                  <Text style={styles.info}>
-                    🎂 Idade:{" "}
-                    {moment().diff(
-                      moment(item.dataNascimento, "DD/MM/YYYY"),
-                      "years"
-                    )}{" "}
-                    anos
-                  </Text>
-                  <Text style={styles.info}>🆔 CPF: {item.cpf}</Text>
-                  <Text style={styles.info}>
-                    📅 Admissão: {item.dataAdmissao}
-                  </Text>
-                  <Text style={styles.info}>📞 Telefone: {item.telefone}</Text>
-                  <Text style={styles.info}>📧 Email: {item.email}</Text>
-                  <Text style={styles.info}>💰 Salário: R$ {item.salario}</Text>
+                <Card.Content style={styles.cardContent}>
+                  <Image
+                    source={{
+                      uri: "https://i.pinimg.com/736x/4e/7d/ba/4e7dbad7fe6d6cf32feefbe36231effd.jpg",
+                    }}
+                    style={styles.avatar}
+                  />
+                  <View style={styles.infoContainer}>
+                    <Text style={styles.nome}>{item.nome}</Text>
+                    <Text style={styles.info}>🧑 Função: {item.funcao}</Text>
+                    <Text style={styles.info}>
+                      🎂 Idade:{" "}
+                      {moment().diff(
+                        moment(item.dataNascimento, "DD/MM/YYYY"),
+                        "years"
+                      )}{" "}
+                      anos
+                    </Text>
+                    <Text style={styles.info}>🆔 CPF: {item.cpf}</Text>
+                    <Text style={styles.info}>
+                      📅 Admissão: {item.dataAdmissao}
+                    </Text>
+                    <Text style={styles.info}>
+                      📞 Telefone: {item.telefone}
+                    </Text>
+                    <Text style={styles.info}>📧 Email: {item.email}</Text>
+                    <Text style={styles.info}>
+                      💰 Salário: R$ {item.salario}
+                    </Text>
+                  </View>
                 </Card.Content>
 
                 <Card.Actions style={styles.actions}>
@@ -160,6 +177,20 @@ const styles = StyleSheet.create({
     marginVertical: 8,
     borderRadius: 15,
     backgroundColor: AppColors.white,
+  },
+  cardContent: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  avatar: {
+    width: 80,
+    height: 80,
+    borderRadius: 40,
+    marginRight: 12,
+    backgroundColor: "#eee",
+  },
+  infoContainer: {
+    flex: 1,
   },
   nome: {
     fontSize: 18,

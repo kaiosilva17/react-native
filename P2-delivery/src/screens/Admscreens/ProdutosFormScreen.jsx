@@ -212,7 +212,7 @@ export default function ProdutosFormScreen() {
         name="pessoas"
         render={({ field: { onChange, value } }) => (
           <TextInput
-            label="Serve (ex: 2-4)"
+            label="Serve quantas pessoas"
             value={value}
             onChangeText={onChange}
             error={!!errors.pessoas}

@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { View, StyleSheet, Alert, ScrollView } from "react-native";
+import {
+  View,
+  StyleSheet,
+  Alert,
+  ScrollView,
+  Image,
+} from "react-native";
 import { Text, TextInput, Button, HelperText, Menu } from "react-native-paper";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -11,7 +17,10 @@ import MaskInput, { Masks } from "react-native-mask-input";
 
 const schema = yup.object({
   nome: yup.string().required("Informe o nome do funcionário"),
-  funcao: yup.string().oneOf(["Atendente", "Chapeiro", "Entregador"]).required("Selecione a função"),
+  funcao: yup
+    .string()
+    .oneOf(["Atendente", "Chapeiro", "Entregador"])
+    .required("Selecione a função"),
   dataNascimento: yup.string().required("Informe a data de nascimento"),
   cpf: yup.string().required("Informe o CPF"),
   dataAdmissao: yup.string().required("Informe a data de admissão"),
@@ -26,12 +35,7 @@ export default function FuncionariosFormScreen() {
   const { loja, funcionario = null } = route.params || {};
   const lojaId = loja?.id;
 
-  useEffect(() => {
-    if (!lojaId) {
-      Alert.alert("Erro", "Loja não encontrada.");
-      navigation.goBack();
-    }
-  }, [lojaId]);
+  const [menuVisible, setMenuVisible] = useState(false);
 
   const {
     control,
@@ -42,8 +46,12 @@ export default function FuncionariosFormScreen() {
     resolver: yupResolver(schema),
   });
 
-  const funcoes = ["Atendente", "Chapeiro", "Entregador"];
-  const [menuVisible, setMenuVisible] = useState(false);
+  useEffect(() => {
+    if (!lojaId) {
+      Alert.alert("Erro", "Loja não encontrada.");
+      navigation.goBack();
+    }
+  }, [lojaId]);
 
   useEffect(() => {
     if (funcionario) {
@@ -58,16 +66,23 @@ export default function FuncionariosFormScreen() {
     }
   }, [funcionario]);
 
+  const funcoes = ["Atendente", "Chapeiro", "Entregador"];
+
   async function salvar(data) {
     try {
+      const dadosComFoto = {
+        ...data,
+        foto: "https://i.pinimg.com/736x/4e/7d/ba/4e7dbad7fe6d6cf32feefbe36231effd.jpg",
+      };
+
       if (funcionario && funcionario.id) {
         await FuncionarioService.atualizarFuncionario(lojaId, {
           id: funcionario.id,
-          ...data,
+          ...dadosComFoto,
         });
         Alert.alert("Sucesso", "Funcionário atualizado com sucesso");
       } else {
-        await FuncionarioService.salvarFuncionario(lojaId, data);
+        await FuncionarioService.salvarFuncionario(lojaId, dadosComFoto);
         Alert.alert("Sucesso", "Funcionário cadastrado com sucesso");
       }
       navigation.goBack();
@@ -81,6 +96,14 @@ export default function FuncionariosFormScreen() {
   return (
     <ScrollView style={styles.container}>
       <Text style={styles.title}>Cadastro de Funcionário</Text>
+
+      <Image
+        source={{
+          uri: "https://i.pinimg.com/736x/4e/7d/ba/4e7dbad7fe6d6cf32feefbe36231effd.jpg",
+        }}
+        style={styles.avatar}
+      />
+      <Text style={styles.photoHint}>Foto padrão do funcionário</Text>
 
       <Controller
         control={control}
@@ -261,6 +284,18 @@ const styles = StyleSheet.create({
     color: AppColors.primaryBlue,
     textAlign: "center",
   },
+  avatar: {
+    width: 150,
+    height: 150,
+    borderRadius: 75,
+    alignSelf: "center",
+    marginBottom: 12,
+  },
+  photoHint: {
+    textAlign: "center",
+    color: AppColors.darkGray,
+    marginBottom: 16,
+  },
   input: {
     marginBottom: 12,
     backgroundColor: AppColors.white,
@@ -281,7 +316,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
     padding: 8,
     backgroundColor: AppColors.primaryBlue,
-    marginBottom: 30
+    marginBottom: 30,
   },
   menuButton: {
     backgroundColor: AppColors.white,
