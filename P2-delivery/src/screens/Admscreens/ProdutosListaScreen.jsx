@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useState } from "react";
 import {
   View,
   FlatList,
@@ -6,10 +6,14 @@ import {
   Alert,
   ActivityIndicator,
 } from "react-native";
-import { Card, Text, FAB, Button } from "react-native-paper";
+import { Card, Text, FAB, Button, Menu } from "react-native-paper";
 import ProdutoService from "../../services/ProdutoService";
 import { AppColors } from "../../constants/Colors";
-import { useFocusEffect, useNavigation, useRoute } from "@react-navigation/native";
+import {
+  useFocusEffect,
+  useNavigation,
+  useRoute,
+} from "@react-navigation/native";
 import * as Animatable from "react-native-animatable";
 
 export default function ProdutosListaScreen() {
@@ -21,17 +25,20 @@ export default function ProdutosListaScreen() {
   const [produtos, setProdutos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [removendo, setRemovendo] = useState(false);
+  const [ordenacao, setOrdenacao] = useState(null);
 
- useFocusEffect(
-   useCallback(() => {
-     if (!lojaId) {
-       Alert.alert("Erro", "Loja não encontrada.");
-       navigation.goBack();
-     } else {
-       carregar();
-     }
-   }, [lojaId])
- );
+  const [menuVisible, setMenuVisible] = useState(false);
+
+  useFocusEffect(
+    useCallback(() => {
+      if (!lojaId) {
+        Alert.alert("Erro", "Loja não encontrada.");
+        navigation.goBack();
+      } else {
+        carregar();
+      }
+    }, [lojaId])
+  );
 
   async function carregar() {
     try {
@@ -67,15 +74,64 @@ export default function ProdutosListaScreen() {
     ]);
   }
 
+  const ordenarProdutos = () => {
+    if (!ordenacao) return produtos;
+
+    return [...produtos].sort((a, b) => {
+      switch (ordenacao) {
+        case "calorias-asc":
+          return a.calorias - b.calorias;
+        case "calorias-desc":
+          return b.calorias - a.calorias;
+        default:
+          return 0;
+      }
+    });
+  };
+
   if (!lojaId) return null;
 
   return (
     <View style={styles.container}>
+      <View style={{ alignItems: "flex-end", marginBottom: 10 }}>
+        <Menu
+          visible={menuVisible}
+          onDismiss={() => setMenuVisible(false)}
+          anchor={
+            <Button mode="contained" onPress={() => setMenuVisible(true)}>
+              Filtrar
+            </Button>
+          }
+        >
+          <Menu.Item
+            onPress={() => {
+              setOrdenacao("calorias-asc");
+              setMenuVisible(false);
+            }}
+            title="Menos calorias"
+          />
+          <Menu.Item
+            onPress={() => {
+              setOrdenacao("calorias-desc");
+              setMenuVisible(false);
+            }}
+            title="Mais calorias"
+          />
+          <Menu.Item
+            onPress={() => {
+              setOrdenacao(null);
+              setMenuVisible(false);
+            }}
+            title="Limpar filtro"
+          />
+        </Menu>
+      </View>
+
       {loading ? (
         <ActivityIndicator size="large" color={AppColors.primaryBlue} />
       ) : (
         <FlatList
-          data={produtos}
+          data={ordenarProdutos()}
           keyExtractor={(item) => item.id.toString()}
           renderItem={({ item, index }) => (
             <Animatable.View
@@ -193,8 +249,8 @@ const styles = StyleSheet.create({
     color: AppColors.darkGray,
   },
   cardImage: {
-  borderTopLeftRadius: 15,
-  borderTopRightRadius: 15,
-  height: 180,
-},
+    borderTopLeftRadius: 15,
+    borderTopRightRadius: 15,
+    height: 180,
+  },
 });
