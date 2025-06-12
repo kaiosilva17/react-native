@@ -62,11 +62,13 @@ function AppDrawer() {
       />
 
       {/* <Drawer.Screen
-        name="AuthStack" 
-        component={AuthNavigator} 
+        name="AuthStack"
+        component={AuthNavigator}
         options={{
-          title: "Autenticação", 
-          drawerItemStyle: { height: 0 }, 
+          title: "Autenticação",
+          drawerIcon: ({ color, size }) => (
+            <Text style={{ color, fontSize: size }}> 👤</Text>
+          ),
         }}
       /> */}
 

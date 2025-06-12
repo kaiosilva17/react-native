@@ -1,9 +1,9 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import ProdutosStack from "./ProdutoStack";
-import FuncionariosScreen from "../screens/Admscreens/FuncionariosListaScreen";
 import { Ionicons } from "@expo/vector-icons";
 import { AppColors } from "../constants/Colors";
+import FuncionarioStack from "./FuncionarioStack";
 
 const Tab = createBottomTabNavigator();
 
@@ -34,7 +34,7 @@ export default function LojaDetalhesTabs({ route }) {
       />
       <Tab.Screen
         name="Funcionarios"
-        component={FuncionariosScreen}
+        component={FuncionarioStack}
         initialParams={{ loja }}
       />
     </Tab.Navigator>
