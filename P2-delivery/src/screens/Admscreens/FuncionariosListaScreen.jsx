@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   View,
   FlatList,
@@ -9,7 +9,7 @@ import {
 import { Card, Text, FAB, Button } from "react-native-paper";
 import FuncionarioService from "../../services/FuncionarioService";
 import { AppColors } from "../../constants/Colors";
-import { useNavigation, useRoute } from "@react-navigation/native";
+import { useFocusEffect, useNavigation, useRoute } from "@react-navigation/native";
 import * as Animatable from "react-native-animatable";
 import moment from "moment";
 
@@ -23,14 +23,16 @@ export default function FuncionariosListaScreen() {
   const [loading, setLoading] = useState(true);
   const [removendo, setRemovendo] = useState(false);
 
-  useEffect(() => {
+  useFocusEffect(
+  useCallback(() => {
     if (!lojaId) {
       Alert.alert("Erro", "Loja não encontrada.");
       navigation.goBack();
     } else {
       carregar();
     }
-  }, [lojaId]);
+  }, [lojaId])
+);
 
   async function carregar() {
     try {
