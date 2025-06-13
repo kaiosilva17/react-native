@@ -72,17 +72,17 @@ function AppDrawer() {
         }}
       /> */}
 
-      {/* UserFlow - Placeholder para o fluxo de usuário logado */}
-      <Drawer.Screen
+      
+      {/* <Drawer.Screen
         name="UserFlow"
-        component={HomeScreen} // Temporariamente aponta para HomeScreen
+        component={HomeScreen} 
         options={{
           title: "  Área do Usuário",
           drawerIcon: ({ color, size }) => (
             <Text style={{ color, fontSize: size }}> 👤</Text>
           ),
         }}
-      />
+      /> */}
 
       <Drawer.Screen
         name="AdminFlow"

@@ -26,7 +26,7 @@ function HomeScreen({ navigation }) {
         </Text>
 
         <Card style={styles.card}>
-          <Card.Cover
+          {/* <Card.Cover
             source={{ uri: "https://i.pinimg.com/736x/03/eb/d6/03ebd625cc0b9d636256ecc44c0ea324.jpg" }}
             style={styles.cardCover}
           />
@@ -43,7 +43,7 @@ function HomeScreen({ navigation }) {
               seu hamburguer, acompanhamento e bebida.
             </Text>
           </Card.Content>
-          <Card.Actions></Card.Actions>
+          <Card.Actions></Card.Actions> */}
         </Card>
 
         <Card style={styles.card}>
