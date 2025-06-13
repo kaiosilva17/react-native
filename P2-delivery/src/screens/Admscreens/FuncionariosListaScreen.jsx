@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useState } from "react";
 import {
   View,
   FlatList,
@@ -7,7 +7,7 @@ import {
   ActivityIndicator,
   Image,
 } from "react-native";
-import { Card, Text, FAB, Button } from "react-native-paper";
+import { Card, Text, FAB, Button, TextInput } from "react-native-paper";
 import FuncionarioService from "../../services/FuncionarioService";
 import { AppColors } from "../../constants/Colors";
 import {
@@ -27,6 +27,7 @@ export default function FuncionariosListaScreen() {
   const [funcionarios, setFuncionarios] = useState([]);
   const [loading, setLoading] = useState(true);
   const [removendo, setRemovendo] = useState(false);
+  const [busca, setBusca] = useState("");
 
   useFocusEffect(
     useCallback(() => {
@@ -73,15 +74,32 @@ export default function FuncionariosListaScreen() {
     ]);
   }
 
+  const funcionariosFiltrados = funcionarios.filter((func) =>
+    func.nome.toLowerCase().includes(busca.toLowerCase())
+  );
+
   if (!lojaId) return null;
 
   return (
     <View style={styles.container}>
+      <TextInput
+        placeholder="Buscar por nome..."
+        value={busca}
+        onChangeText={setBusca}
+        mode="outlined"
+        style={styles.input}
+        left={<TextInput.Icon icon="magnify" />}
+        theme={{
+          roundness: 15,
+          colors: { primary: AppColors.primaryBlue },
+        }}
+      />
+
       {loading ? (
         <ActivityIndicator size="large" color={AppColors.primaryBlue} />
       ) : (
         <FlatList
-          data={funcionarios}
+          data={funcionariosFiltrados}
           keyExtractor={(item) => item.id.toString()}
           renderItem={({ item, index }) => (
             <Animatable.View
@@ -93,7 +111,9 @@ export default function FuncionariosListaScreen() {
                 <Card.Content style={styles.cardContent}>
                   <Image
                     source={{
-                      uri: "https://i.pinimg.com/736x/4e/7d/ba/4e7dbad7fe6d6cf32feefbe36231effd.jpg",
+                      uri:
+                        item.foto ||
+                        "https://i.pinimg.com/736x/4e/7d/ba/4e7dbad7fe6d6cf32feefbe36231effd.jpg",
                     }}
                     style={styles.avatar}
                   />
@@ -143,7 +163,7 @@ export default function FuncionariosListaScreen() {
             </Animatable.View>
           )}
           ListEmptyComponent={() => (
-            <Text style={styles.emptyText}>Nenhum funcionário cadastrado.</Text>
+            <Text style={styles.emptyText}>Nenhum funcionário encontrado.</Text>
           )}
         />
       )}
@@ -224,5 +244,10 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontSize: 16,
     color: AppColors.darkGray,
+  },
+  input: {
+    marginBottom: 10,
+    backgroundColor: AppColors.white,
+    borderRadius: 15,
   },
 });

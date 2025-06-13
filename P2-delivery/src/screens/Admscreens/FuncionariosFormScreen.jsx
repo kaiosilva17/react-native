@@ -1,11 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  View,
-  StyleSheet,
-  Alert,
-  ScrollView,
-  Image,
-} from "react-native";
+import { View, StyleSheet, Alert, ScrollView, Image } from "react-native";
 import { Text, TextInput, Button, HelperText, Menu } from "react-native-paper";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -14,6 +8,7 @@ import FuncionarioService from "../../services/FuncionarioService";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { AppColors } from "../../constants/Colors";
 import MaskInput, { Masks } from "react-native-mask-input";
+import * as ImagePicker from "expo-image-picker";
 
 const schema = yup.object({
   nome: yup.string().required("Informe o nome do funcionário"),
@@ -36,6 +31,7 @@ export default function FuncionariosFormScreen() {
   const lojaId = loja?.id;
 
   const [menuVisible, setMenuVisible] = useState(false);
+  const [imagem, setImagem] = useState(null);
 
   const {
     control,
@@ -63,16 +59,59 @@ export default function FuncionariosFormScreen() {
       setValue("telefone", funcionario.telefone);
       setValue("email", funcionario.email);
       setValue("salario", funcionario.salario);
+      setImagem(funcionario.foto);
     }
   }, [funcionario]);
 
   const funcoes = ["Atendente", "Chapeiro", "Entregador"];
 
+  async function abrirCamera() {
+    const { status } = await ImagePicker.requestCameraPermissionsAsync();
+    if (status !== "granted") {
+      Alert.alert(
+        "Permissão negada",
+        "Precisamos da permissão para usar a câmera."
+      );
+      return;
+    }
+    const result = await ImagePicker.launchCameraAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      quality: 0.7,
+      allowsEditing: true,
+      aspect: [1, 1],
+    });
+    if (!result.canceled) {
+      setImagem(result.assets[0].uri);
+    }
+  }
+
+  async function abrirGaleria() {
+    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    if (status !== "granted") {
+      Alert.alert(
+        "Permissão negada",
+        "Precisamos da permissão para acessar a galeria."
+      );
+      return;
+    }
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      quality: 0.7,
+      allowsEditing: true,
+      aspect: [1, 1],
+    });
+    if (!result.canceled) {
+      setImagem(result.assets[0].uri);
+    }
+  }
+
   async function salvar(data) {
     try {
       const dadosComFoto = {
         ...data,
-        foto: "https://i.pinimg.com/736x/4e/7d/ba/4e7dbad7fe6d6cf32feefbe36231effd.jpg",
+        foto:
+          imagem ||
+          "https://i.pinimg.com/736x/4e/7d/ba/4e7dbad7fe6d6cf32feefbe36231effd.jpg",
       };
 
       if (funcionario && funcionario.id) {
@@ -99,11 +138,32 @@ export default function FuncionariosFormScreen() {
 
       <Image
         source={{
-          uri: "https://i.pinimg.com/736x/4e/7d/ba/4e7dbad7fe6d6cf32feefbe36231effd.jpg",
+          uri:
+            imagem ||
+            "https://i.pinimg.com/736x/4e/7d/ba/4e7dbad7fe6d6cf32feefbe36231effd.jpg",
         }}
         style={styles.avatar}
       />
-      <Text style={styles.photoHint}>Foto padrão do funcionário</Text>
+      <Text style={styles.photoHint}>Foto do funcionário</Text>
+
+      <View
+        style={{
+          flexDirection: "row",
+          justifyContent: "center",
+          marginBottom: 16,
+        }}
+      >
+        <Button
+          mode="outlined"
+          onPress={abrirCamera}
+          style={{ marginRight: 8 }}
+        >
+          Câmera
+        </Button>
+        <Button mode="outlined" onPress={abrirGaleria}>
+          Galeria
+        </Button>
+      </View>
 
       <Controller
         control={control}
