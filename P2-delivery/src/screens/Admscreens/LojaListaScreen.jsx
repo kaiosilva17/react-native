@@ -171,7 +171,9 @@ export default function LojaListaScreen() {
 
                   <Text style={styles.info}>📅 Fundação: {item.fundacao}</Text>
                   <Text style={styles.info}>⏰ Horário: {item.horario}</Text>
-                  <Text style={styles.info}>📏 Tamanho da Loja: {item.tamanho} m²</Text>
+                  <Text style={styles.info}>
+                    📏 Tamanho da Loja: {item.tamanho} m²
+                  </Text>
                 </Card.Content>
 
                 <Card.Actions style={styles.actions}>

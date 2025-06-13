@@ -9,26 +9,42 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import { AppColors } from "../../constants/Colors";
 import MaskInput, { Masks } from "react-native-mask-input";
 import * as ImagePicker from "expo-image-picker";
-
-const schema = yup.object({
-  nome: yup.string().required("Informe o nome do funcionário"),
-  funcao: yup
-    .string()
-    .oneOf(["Atendente", "Chapeiro", "Entregador"])
-    .required("Selecione a função"),
-  dataNascimento: yup.string().required("Informe a data de nascimento"),
-  cpf: yup.string().required("Informe o CPF"),
-  dataAdmissao: yup.string().required("Informe a data de admissão"),
-  telefone: yup.string().required("Informe o telefone"),
-  email: yup.string().email("Email inválido").required("Informe o email"),
-  salario: yup.string().required("Informe o salário"),
-});
+import { parse, isBefore } from "date-fns";
 
 export default function FuncionariosFormScreen() {
   const navigation = useNavigation();
   const route = useRoute();
   const { loja, funcionario = null } = route.params || {};
   const lojaId = loja?.id;
+  const fundacaoLoja = loja?.fundacao;
+
+  const schema = yup.object({
+    nome: yup.string().required("Informe o nome do funcionário"),
+    funcao: yup
+      .string()
+      .oneOf(["Atendente", "Chapeiro", "Entregador"])
+      .required("Selecione a função"),
+    dataNascimento: yup.string().required("Informe a data de nascimento"),
+    cpf: yup.string().required("Informe o CPF"),
+    dataAdmissao: yup
+      .string()
+      .required("Informe a data de admissão")
+      .test(
+        "dataAdmissao-maior-que-fundacao",
+        `A data de admissão deve ser após a fundação da loja (${fundacaoLoja})`,
+        function (value) {
+          if (!value || !fundacaoLoja) return true;
+
+          const admissao = parse(value, "dd/MM/yyyy", new Date());
+          const fundacao = parse(fundacaoLoja, "dd/MM/yyyy", new Date());
+
+          return !isBefore(admissao, fundacao);
+        }
+      ),
+    telefone: yup.string().required("Informe o telefone"),
+    email: yup.string().email("Email inválido").required("Informe o email"),
+    salario: yup.string().required("Informe o salário"),
+  });
 
   const [menuVisible, setMenuVisible] = useState(false);
   const [imagem, setImagem] = useState(null);
@@ -332,11 +348,7 @@ export default function FuncionariosFormScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 16,
-    backgroundColor: AppColors.lightGray,
-  },
+  container: { flex: 1, padding: 16, backgroundColor: AppColors.lightGray },
   title: {
     fontSize: 24,
     fontWeight: "bold",
@@ -356,10 +368,7 @@ const styles = StyleSheet.create({
     color: AppColors.darkGray,
     marginBottom: 16,
   },
-  input: {
-    marginBottom: 12,
-    backgroundColor: AppColors.white,
-  },
+  input: { marginBottom: 12, backgroundColor: AppColors.white },
   maskInput: {
     height: 56,
     backgroundColor: AppColors.white,
@@ -368,17 +377,12 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginBottom: 12,
   },
-  error: {
-    color: AppColors.error,
-    marginBottom: 8,
-  },
+  error: { color: AppColors.error, marginBottom: 8 },
   button: {
     marginTop: 20,
     padding: 8,
     backgroundColor: AppColors.primaryBlue,
     marginBottom: 30,
   },
-  menuButton: {
-    backgroundColor: AppColors.white,
-  },
+  menuButton: { backgroundColor: AppColors.white },
 });
